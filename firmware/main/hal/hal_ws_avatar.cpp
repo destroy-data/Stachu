@@ -97,9 +97,6 @@ public:
 
     void connect()
     {
-        auto token = secret_logic::generate_auth_token();
-
-        // 销毁旧实例，确保状态复位
         _websocket.reset();
 
         auto& board  = Board::GetInstance();
@@ -112,9 +109,6 @@ public:
             ESP_LOGE(_tag.c_str(), "Failed to create websocket");
             return;
         }
-
-        // 设置认证头
-        _websocket->SetHeader("Authorization", token.c_str());
 
         // 设置回调
         _websocket->OnConnected([this]() {
