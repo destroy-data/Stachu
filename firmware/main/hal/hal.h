@@ -220,10 +220,6 @@ public:
     WifiStatus getWifiStatus();
     void startSntp();
 
-    /* --------------------------------- EzData --------------------------------- */
-    void startEzDataService(std::function<void(std::string_view)> onStartLog);
-    uitk::Signal<std::string_view> onEzdataPairCode;
-
     /* ----------------------------------- OTA ---------------------------------- */
     bool updateFirmware(std::function<void(std::string_view)> onLog);
 
