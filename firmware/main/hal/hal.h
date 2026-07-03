@@ -26,24 +26,6 @@ enum class HeadPetGesture { None, Press, Release, SwipeForward, SwipeBackward };
  * @brief
  *
  */
-enum class WsSignalSource {
-    Local = 0,
-    Remote,
-};
-
-/**
- * @brief
- *
- */
-struct WsTextMessage_t {
-    std::string name;
-    std::string content;
-};
-
-/**
- * @brief
- *
- */
 enum class ImuMotionEvent {
     None = 0,
     Shake,
@@ -72,23 +54,6 @@ enum class CommonLogLevel {
     Warning,
     Error,
 };
-
-/**
- * @brief
- *
- */
-namespace app_center {
-
-struct AppInfo_t {
-    std::string name;
-    std::string iconUrl;
-    std::string description;
-    std::string firmwareUrl;
-};
-
-using AppInfoList_t = std::vector<AppInfo_t>;
-
-};  // namespace app_center
 
 /**
  * @brief
@@ -230,20 +195,6 @@ public:
     /* ---------------------------------- Power --------------------------------- */
     void setServoPowerEnabled(bool enabled);
 
-    /* -------------------------------- Websocket ------------------------------- */
-    uitk::Signal<std::string_view> onWsMotionData;
-    uitk::Signal<std::string_view> onWsAvatarData;
-    uitk::Signal<std::string> onWsCallRequest;
-    uitk::Signal<bool> onWsCallResponse;
-    uitk::Signal<WsSignalSource> onWsCallEnd;
-    uitk::Signal<const WsTextMessage_t&> onWsTextMessage;
-    uitk::Signal<bool> onWsVideoModeChange;
-    uitk::Signal<std::shared_ptr<LvglImage>> onWsVideoFrame;
-    uitk::Signal<std::string_view> onWsDanceData;
-    uitk::Signal<CommonLogLevel, std::string_view> onWsLog;
-
-    void startWebSocketAvatarService(std::function<void(std::string_view)> onStartLog);
-
     /* ----------------------------------- IMU ---------------------------------- */
     uitk::Signal<ImuMotionEvent> onImuMotionEvent;
 
@@ -268,10 +219,6 @@ public:
     void startNetwork(std::function<void(std::string_view)> onLog);
     WifiStatus getWifiStatus();
     void startSntp();
-
-    /* -------------------------------- App center ------------------------------- */
-    app_center::AppInfoList_t fetchAppList();
-    void launchApp(std::string_view url, std::function<void(int)> onProgress);
 
     /* --------------------------------- EzData --------------------------------- */
     void startEzDataService(std::function<void(std::string_view)> onStartLog);
