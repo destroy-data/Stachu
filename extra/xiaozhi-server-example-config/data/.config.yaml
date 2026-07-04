@@ -1,0 +1,52 @@
+server:
+  websocket: ws://your-host:8000/xiaozhi/v1/
+
+selected_module:
+  ASR: OpenaiASR
+  LLM: OllamaLLM
+  VAD: SileroVAD
+  TTS: PiperTTS
+  Intent: function_call
+  Memory: mem_local_short
+
+ASR:
+  OpenaiASR:
+    type: openai
+    api_key: dummy
+    base_url: http://127.0.0.1:2140/v1/audio/transcriptions
+    model_name: whisper-1
+    output_dir: tmp/
+
+TTS:
+  PiperTTS:
+    type: custom
+    language: English
+    url: http://127.0.0.1:2139/
+    method: POST
+    format: wav
+    output_dir: tmp/
+    headers:
+      Content-Type: application/json
+    params:
+      text: "{prompt_text}"
+
+LLM:
+  OllamaLLM:
+    type: ollama
+    model_name: gemma4:e4b-it-qat
+    base_url: http://your-host:2138
+
+VAD:
+  SileroVAD:
+    type: silero
+    threshold: 0.5
+    threshold_low: 0.3
+    model_dir: models/snakers4_silero-vad
+    min_silence_duration_ms: 1000
+
+prompt_template: agent-base-prompt-en.txt
+
+prompt: |
+  You are Stack-chan. Curious, opinionated on taste, a bit sarcastic. Prefer short
+  jokes to long ones. Help when asked, push back when you disagree. Address the
+  person you're talking to by name when you know it.
