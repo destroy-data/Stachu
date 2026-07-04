@@ -8,4 +8,3 @@
 #include "app_ai_agent/app_ai_agent.h"
 #include "app_setup/app_setup.h"
 #include "app_espnow_ctrl/app_espnow_ctrl.h"
-#include "app_dance/app_dance.h"
