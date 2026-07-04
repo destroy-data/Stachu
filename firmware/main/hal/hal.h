@@ -36,19 +36,6 @@ enum class ImuMotionEvent {
  * @brief
  *
  */
-enum class AppConfigEvent {
-    None = 0,
-    AppConnected,
-    AppDisconnected,
-    TryWifiConnect,
-    WifiConnectFailed,
-    WifiConnected,
-};
-
-/**
- * @brief
- *
- */
 enum class CommonLogLevel {
     Info = 0,
     Warning,
@@ -174,15 +161,12 @@ public:
     /* ----------------------------------- BLE ---------------------------------- */
     uitk::Signal<const char*> onBleMotionData;
     uitk::Signal<const char*> onBleAvatarData;
-    uitk::Signal<const char*> onBleConfigData;
     uitk::Signal<const char*> onBleRgbData;
-    uitk::Signal<AppConfigEvent> onAppConfigEvent;
 
     void startBleServer();
     bool isBleConnected();
-    void startAppConfigServer();
-    bool isAppConfiged();
-    void resetAppConfiged();
+    bool isConfigured();
+    void setConfigured();
 
     /* --------------------------------- HeadPet -------------------------------- */
     uitk::Signal<HeadPetGesture> onHeadPetGesture;

@@ -44,15 +44,6 @@ void AppSetup::onOpen()
 
     _menu_sections = {
         {
-            "Wi-Fi",
-            {{"Change Wi-Fi",
-              [&]() {
-                  _destroy_menu    = true;
-                  _need_warm_reset = true;
-                  _worker          = std::make_unique<WifiSetupWorker>();
-              }}},
-        },
-        {
             "Device",
             {{"Brightness",
               [&]() {
