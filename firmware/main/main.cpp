@@ -13,6 +13,9 @@
 using namespace mooncake;
 using namespace smooth_ui_toolkit;
 
+static_assert(sizeof(CONFIG_OTA_URL) > 1,
+              "CONFIG_OTA_URL must be set in sdkconfig.defaults.local");
+
 extern "C" void app_main(void)
 {
     // Setup logger

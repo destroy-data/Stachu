@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import json
 
 
@@ -22,22 +23,37 @@ def clone_or_update_repo(
             check=True,
         )
 
-    # 应用 patch
     if patch_path:
         patch_full_path = (
             patch_path
             if os.path.isabs(patch_path)
             else os.path.join(os.getcwd(), patch_path)
         )
-        # 使用 git apply --check 先检测补丁是否能应用，避免报错
-        check_result = subprocess.run(
-            ["git", "-C", path, "apply", "--check", patch_full_path]
+        forward = subprocess.run(
+            ["git", "-C", path, "apply", patch_full_path],
+            capture_output=True,
+            text=True,
         )
-        if check_result.returncode == 0:
-            subprocess.run(["git", "-C", path, "apply", patch_full_path], check=True)
+        if forward.returncode == 0:
             print(f"Applied patch {patch_path} to {path}")
-        else:
-            print(f"Patch {patch_path} cannot be applied cleanly to {path}, skipped.")
+            return
+
+        # Forward failed — maybe the patch is already applied. Check reverse.
+        reverse = subprocess.run(
+            ["git", "-C", path, "apply", "--reverse", "--check", patch_full_path],
+            capture_output=True,
+            text=True,
+        )
+        if reverse.returncode == 0:
+            print(f"Patch {patch_path} already applied to {path}, skipping.")
+            return
+
+        sys.stderr.write(
+            f"ERROR: patch {patch_path} does not apply cleanly to {path}.\n"
+            f"  forward stderr:\n{forward.stderr}"
+            f"  reverse check stderr:\n{reverse.stderr}"
+        )
+        sys.exit(1)
 
 
 def fetch_dependencies():

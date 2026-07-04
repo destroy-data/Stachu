@@ -2,7 +2,7 @@ diff --git a/main/application.cc b/main/application.cc
 index d69d43d..3b6f07e 100644
 --- a/main/application.cc
 +++ b/main/application.cc
-@@ -610,33 +610,36 @@ void Application::InitializeProtocol() {
+@@ -610,33 +610,35 @@ void Application::InitializeProtocol() {
  }
  
  void Application::ShowActivationCode(const std::string& code, const std::string& message) {
@@ -61,8 +61,7 @@ index d69d43d..3b6f07e 100644
 +    //     }
 +    // }
 +
-+    auto display = Board::GetInstance().GetDisplay();
-+    display->SetChatMessage("system", "Please bind and set up in the mobile app.");
++    ESP_LOGW(TAG, "ShowActivationCode called but self-hosted build has no activation flow");
  }
  
  void Application::Alert(const char* status, const char* message, const char* emotion, const std::string_view& sound) {
